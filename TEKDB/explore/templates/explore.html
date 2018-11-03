@@ -34,17 +34,15 @@
 <div class='explore-logo'>
   <img src='/static/explore/img/compass.png'>
   <p>Explore</p>
+  {{header_logo | safe}}
 </div>
+
+  {% block extra_js %}
+  <script src="/static/explore/js/explore.js"></script>
+  <!--The script below makes all buttons in the button form the same height, regardless of the size of the image within them.-->
+  <!--
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  -->
 {% endblock %}
-
-{% block extra_js %}
-<script src="/static/explore/js/explore.js"></script>
-<!--The script below makes all buttons in the button form the same height, regardless of the size of the image within them.-->
-<!--
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
--->
-
-
-
 
 {% endblock %}

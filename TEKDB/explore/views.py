@@ -17,13 +17,15 @@ def home(request):
         'page':'home',
         'pageTitle':'Welcome',
         'pageContent':page_content,
-        'user': request.user
+        'user': request.user,
+        'header_logo' : get_image_url()
     }
     return render(request, "welcome.html", context)
 
 def about(request):
     try:
-        page_content_obj = PageContent.objects.get(page="About")
+        page_content_obj = PageCo
+        ntent.objects.get(page="About")
         if page_content_obj.is_html:
             page_content = page_content_obj.html_content
         else:
@@ -34,7 +36,8 @@ def about(request):
         'page':'about',
         'pageTitle':'About',
         'pageContent':page_content,
-        'user': request.user
+        'user': request.user,
+        'header_logo' : get_image_url()
     }
     return render(request, "tek_index.html", context)
 
@@ -51,7 +54,8 @@ def help(request):
         'page':'help',
         'pageTitle':'Help',
         'pageContent':page_content,
-        'user': request.user
+        'user': request.user,
+        'header_logo' : get_image_url()
     }
     return render(request, "tek_index.html", context)
 
@@ -62,9 +66,23 @@ def explore(request):
         'page':'explore',
         'pageTitle':'Explore',
         'pageContent':"<p>In in mi vitae nibh posuere condimentum vitae eget quam. Etiam et urna id odio fringilla aliquet id hendrerit nisl. Ut sed ex vel felis rhoncus eleifend. Ut auctor facilisis vehicula. Ut sed dui nec ipsum pellentesque tempus.</p>",
-        'user': request.user
+        'user': request.user,
+        'header_logo' : get_image_url()
     }
     return render(request, "explore.html", context)
+
+def get_image_url():
+    from django.conf import settings
+    from explore.models import HeaderImage
+    h_image_obj = HeaderImage.objects.all()[0]
+    if h_image_obj is None:
+        h_image = "<img src='/static/explore/img/logoTEKDB.png' alt='TEKDB logo' style='margin-bottom:-15px;margin-left:-60px;'>"
+    else:
+        h_image = "<img src='" + settings.MEDIA_URL + h_image_obj.image.name + "' alt='Header Image'>"
+    return h_image
+
+
+
 
 def get_model_by_type(model_type):
     from TEKDB import models as tekmodels
@@ -121,7 +139,8 @@ def get_by_model_type(request, model_type):
         'page':'Results',
         'pageTitle':'Results',
         'pageContent':"<p>Your search results:</p>",
-        'user': request.user
+        'user': request.user,
+        'header_logo' : get_image_url()
     }
     return render(request, "results.html", context)
 
@@ -154,6 +173,7 @@ def get_by_model_id(request, model_type, id):
         'id': id,
         'back_link': back_link,
         'state': state,
+        'header_logo' : get_image_url()
     }
 
     if 'map' in record_dict.keys() and not record_dict['map'] == None:
@@ -409,12 +429,13 @@ def search(request):
         'state': {
             'page' : int(page),
             'items_per_page' : int(items_per_page),
+        'header_logo' : get_image_url()
         },
     }
 
     request.META.pop('QUERY_STRING')
 
-    return render(request, "results.html", context)
+    return (request, "results.html", context)
 
 def getResults(keyword_string, categories):
     import TEKDB
